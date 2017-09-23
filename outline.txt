@@ -2,3 +2,113 @@
   - Where Python’s standard library falls short
   - Pendulum
    “Python datetimes made easy”
+
+  - When did happen? When should it happen?
+  - Logging
+  - Display
+  - Scheduling events
+  - Data analysis
+    Latency
+    Average time between events
+    What time of day do you see peak traffic?
+    Does this happen more often during business hours?
+
+Dates
+    Year length is not a nice number: 365.24220
+Times
+Time zones
+
+Common operations
+  - Store the current timestamp in a neutral format that I can later
+    easily display in different ways
+
+time.strftime("%s", time.gmtime())
+'1506224887'
+>>> datetime.datetime.utcnow().strftime("%s")
+'1506221386'
+>>> datetime.datetime.now().strftime("%s")
+'1506199791'
+second is actually the UTC time
+Python’s `0 = 'banana'` moment
+
+mysql> SELECT 0 = 'banana';
++--------------+
+| 0 = 'banana' |
++--------------+
+|            1 |
++--------------+
+1 row in set, 1 warning (0.00 sec)
+
+Do not use systems that can easily produce completely and obviously
+incorrect results.
+
+Combination of APIs from the original UNIX
+and the early 1990s THINK C compiler for Macintosh
+
+Django 1.9 release notes:
+
+The django.utils.timezone.make_aware() function gained an is_dst argument to help resolve ambiguous times during DST transitions.
+
+make_aware(value, timezone=None, is_dst=None)
+Returns an aware datetime that represents the same point in time as value in timezone, value being a naive datetime. If timezone is set to None, it defaults to the current time zone.
+because 2:30 a.m. is ambiguous when it happens twice
+
+    for recording past events: epoch timestamp, and maybe client’s local
+    time zone name
+
+tzcompile
+look for multiple changes
+
+
+
+
+3 years ago today:
+  - can’t just subtract DAYS_IN_YEAR
+  - what if today is a leap day?
+
+Basic computations at the command line
+  - (g)date +%s
+  - (g)date -d '@<epoch time>'
+  - What time is it in Berlin?
+  - If it’s 8:15 p.m. in Berlin, what time is it here?
+  - How long ago did ___ happen?
+    months are not constant length
+    years are not constant length: leap days
+    days are not constant length: leap hours, leap seconds
+
+Formatting
+  - Can’t just store a string: need efficient, canonical format
+
+  - C partially specified by POSIX
+  - Unicode , slowly gaining popularity
+
+Ambiguity
+  - 1/2/11
+
+ISO8601
+  - actually a family of different formats
+
+Unix epoch time
+
+Dates
+
+Python datetime sucks
+
+
+There are many advanced date, time, and time zone topics
+
+Pendulum handles common date, time, and time zone computations
+in an easier and safer way
+than Python’s built-in libraries.
+
+
+What we don’t cover:
+  - Pendulum may or may not cover these; you’re on your own here
+  - Other calendars
+    macos-calendar-list.png
+  - Localization
+    In theory, setting your computer’s locale 1/2 or 2/1
+    In practice, you should override it to YYYY-MM-DD
+    But Friday, January 15, 2016
+  - Leap seconds
+    GPS satellites launched in 80s, require up-to-date leap second list
