@@ -1,5 +1,5 @@
 RUBBER_INFO = rubber-info
-RUBBER = rubber -m graphics -m xelatex --warn=refs --warn=misc
+RUBBER = rubber --unsafe -m graphics -m xelatex --warn=refs --warn=misc
 .SECONDARY:
 SHELL = /bin/bash -eu
 
@@ -38,3 +38,19 @@ clean::
 
 realclean:: clean
 	rm -f {annotated-,}presentation-skim.pdf
+
+PYTHON_FILES = $(wildcard *.py)
+
+presentation.pdf: $(PYTHON_FILES:%.py=%.py.include)
+
+%.py.include: %.py ./python-interpret
+	echo -n > $@
+	echo '\begin{verbatim}' >> $@
+	./python-interpret < $*.py >> $@
+	echo '\end{verbatim}' >> $@
+
+%.py.out: %.py
+	(echo 'import datetime'; cat $<) | python > $@
+
+clean::
+	rm -f *.out *.include

@@ -1,2 +1,6 @@
 *presentation.pdf
 todo.txt
+presentation.sh
+presentation.stdout
+presentation.stderr
+*.include

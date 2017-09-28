@@ -1,0 +1,29 @@
+#!/usr/bin/env python3.6
+
+import datetime
+import io
+import re
+import sys
+import time
+import tokenize
+
+last_t_type = None
+code_tokens = []
+for t in tokenize.generate_tokens(sys.stdin.readline):
+    if len(code_tokens) == 0 and t.type == tokenize.DEDENT:
+        continue
+
+    code_tokens.append(t)
+
+    if ((t.type == tokenize.NL and t.type == last_t_type)
+            or t.type == tokenize.ENDMARKER):
+        code = tokenize.untokenize(code_tokens)
+        code = re.sub(r"^\\\n", "", code, flags=re.MULTILINE)
+        code = code.strip("\n")
+        print("\n".join(">>> " + s for s in code.split("\n")))
+
+        compiled_code = compile(code, '', 'single')
+        ret = exec(compiled_code)
+        code_tokens = []
+
+    last_t_type = t.type

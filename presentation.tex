@@ -1,6 +1,7 @@
 \documentclass[xcolor=svgnames,17pt]{beamer}
 
 \usepackage[export]{adjustbox}
+\usepackage{bashful}
 \usepackage{bookmark}
 \usepackage{colortbl} \arrayrulecolor[gray]{0.7}
 \usepackage{microtype}
@@ -9,6 +10,7 @@
 \usepackage{textcomp}
 \usepackage{tabularx}
 \usepackage{xspace}
+\usepackage{verbatim}
 
 \usepackage{fontspec}
 
@@ -92,8 +94,15 @@
 
 \section{Introduction}
 
-\begin{frame}{Time and Time Zones}
+\begin{frame}[fragile]{Time and Time Zones}
 
+\input{datetime-now.py.include}
+
+\bash[script,stdout,prefix=$\space]
+date +%s
+\END
+
+\input{hello-world.py.include}
 
 \end{frame}
 
