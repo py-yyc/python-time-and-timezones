@@ -90,6 +90,8 @@
 
 \tocsection{Title page}
 
+\sizefont{4}
+
 \begin{frame}[plain]
 \titlepage
 \end{frame}
@@ -100,32 +102,154 @@
 
 \section{Introduction}
 
+\def\fillinblank{\_\_\_\_}
+
+\begin{frame}{Basic use cases for date and time computation}
+\begin{itemize}
+\item What time is it now?
+\item What time is it in \fillinblank?
+\item What time is here when it’s \fillinblank in \fillinblank?
+\item What does the date 9/10/11 mean?
+\item How long ago did \fillinblank happen?
+\item Remind me when \fillinblank is about to happen
+\end{itemize}
+\end{frame}
+
 \section{Theory}
 
-\section{Common computations}
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
 
+\begin{frame}{Dates and times for humans}
 
+\begin{itemize}
+\item Times
+\item Dates
+\item Time zones
+\end{itemize}
 
-\begin{frame}[fragile]{Time and Time Zones}
+\end{frame}
 
-It takes 365.24220 rotations of the earth to move around the sun
+\begin{frame}{Times for humans}
+\begin{itemize}
+\item \alert{Times}
 
-This is not a very convenient number
+Pretty straightforward
+
+Partition the day into regular intervals:
+
+\only<2->{24 hours of 60 minutes of 60 seconds}
+\item Dates
+\item Time zones
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Dates for humans}
+\begin{itemize}
+\item Times
+\item \alert{Dates}
+
+\only<1-2>{Partition the day into \textit{irregular} intervals}
+
+\only<2->{12 months of varying lengths}
+
+\only<2->{Pattern depends on year}
+
+\item Time zones
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Dates for humans}
+\begin{itemize}
+\item Times
+\item \alert{Dates} \\
+    Partition the day into \textit{irregular} intervals
+
+    Root problem: \\
+    365.24220 earth rotations per orbit of sun
 
 \bash[stdout,script,prefix=$\space]
 gfactor 365
 \END
 
-\bash[stdout,prefix=$\space]
-echo 365 + 1/4 - 1/100 + 1/400 | ./python-interpret
-\END
+Not a convenient number, \\
+so months of varying lengths
 
+\item Time zones
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Dates for humans}
+\begin{itemize}
+\item Times
+\item \alert{Dates}
+
+    365.24220 earth rotations per orbit of sun
+
+    Leap days to deal with the fractional part
+
+{
+\sizefont{2}
+\bash[stdout]
+echo '
+3 / ((365 + 1/4 - 1/100 + 1/400) - 365.24220)
+' | ./python-interpret
+\END
+}
+
+\item Time zones
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Theoretical conclusions for humans}
+
+\begin{itemize}
+\item Times
+
+Divided into regular intervals, \\
+relatively straightforward
+
+\item Dates
+
+Divided into irregular intervals, \\
+complicated but unchanging
+
+\item Time zones
+
+Super-complicated, arbitrary,
+subject to change without notice
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Theoretical conclusions for humans}
+
+\begin{itemize}
+\item Times
+\item Dates
+\item Time zones
+\end{itemize}
+
+Unfortunately, times and dates are meaningless without time zones
+
+Not much overlap between the workday for Australia and Vancouver
+
+\end{frame}
+
+\begin{frame}{Last completed frame}
+\end{frame}
+
+\begin{frame}[fragile]{Dates and times for humans}
+
+\bash[stdout,script,prefix=$\space]
+gfactor 365
+\END
 
 \end{frame}
 
 \begin{frame}[fragile]{Time and Time Zones}
-
-\input{datetime-now.py.include}
 
 \bash[script,stdout,prefix=$\space]
 date +%s

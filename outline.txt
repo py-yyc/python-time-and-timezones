@@ -1,4 +1,4 @@
-# Theory: Dates and times for computers
+# Theory: Dates and times for humans
 
   - Times are pretty straightforward
     Cut up the day into regular intervals
