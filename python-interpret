@@ -1,11 +1,20 @@
 #!/usr/bin/env python3.6
 
-import datetime
+# Simulate running code at a python prompt
+#
+# Separate statements by two newlines
+# they will be stripped on output,
+# but are used to parse out distinct statements
+
 import io
 import re
 import sys
 import time
 import tokenize
+
+# Not used by this script, but allows snippets to skip the import
+import datetime
+import pendulum
 
 last_t_type = None
 code_tokens = []

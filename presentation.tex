@@ -324,27 +324,37 @@ Seconds since start of January 1, 1970, UTC: 1506624282
 
 \end{frame}
 
-\begin{frame}{Last completed frame}
-\end{frame}
+\begin{frame}{Theoretical conclusions}
 
-\begin{frame}[fragile]{Dates and times for humans}
-
-\bash[stdout,script,prefix=$\space]
-gfactor 365
-\END
+Huamns and computers have very different needs when it comes to dates and
+times
 
 \end{frame}
 
-\begin{frame}[fragile]{Time and Time Zones}
+\section{Python}
 
-\bash[script,stdout,prefix=$\space]
-date +%s
-\END
+\begin{frame}{Basic use cases for date and time computation}
+\begin{itemize}
+\item What time is it now?
+\item What time is it in \fillinblank?
+\item What time is here when it’s \fillinblank in \fillinblank?
+\item What does the date 9/10/11 mean?
+\item How long ago did \fillinblank happen?
+\item Remind me when \fillinblank is about to happen
+\end{itemize}
+\end{frame}
 
-\bash[stdout,prefix=$\space]
-echo '1 + 1' | ./python-interpret
-\END
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
 
+\begin{frame}[fragile]{Python's standard library}
+
+Create datetime objects and convert them to seconds since the epoch:
+
+\pause
+
+{\sizefont{3}
 \bash[stdout]
 echo '
 datetime.datetime.utcnow().strftime("%s")
@@ -353,7 +363,110 @@ datetime.datetime.utcnow().strftime("%s")
 datetime.datetime.now().strftime("%s")
 ' | ./python-interpret
 \END
+}
 
+\pause
+
+\begin{onlyenv}<3>
+This is substantially more dangerous than using MySQL:
+
+\sizefont{2}
+\begin{verbatim}
+mysql> SELECT 0 = 'banana';
++--------------+
+| 0 = 'banana' |
++--------------+
+|            1 |
++--------------+
+1 row in set, 1 warning (0.00 sec)
+\end{verbatim}
+\end{onlyenv}
+
+\pause
+
+\alert{Python’s standard library does not understand time zones and is not
+generally safe to use for date or time computations.}
+
+\end{frame}
+
+\section{Pendulum}
+
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{Pendulum: “Python datetime made easy”}
+\texttt{pip3 install pendulum}
+\end{frame}
+
+\begin{frame}[fragile]{What time is it now?}
+
+{\sizefont{3}
+\bash[stdout]
+echo '
+now = pendulum.now()
+
+
+now
+
+
+now.timezone
+
+
+now.timestamp()
+
+
+now.day_of_week == pendulum.THURSDAY
+' | ./python-interpret
+\END
+}
+
+\pause
+
+{\sizefont{3}
+\bash[stdout]
+echo '
+utcnow = pendulum.utcnow()
+
+
+utcnow
+
+
+utcnow.timestamp()
+' | ./python-interpret
+\END
+}
+
+\end{frame}
+
+\section{Conclusions}
+
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{What we haven’t talked about}
+
+Pendulum may or not help you here; you’re on your own.
+
+\pause
+
+\begin{itemize}
+\item Other calendars: Buddhist, Coptic, Hebrew, Islamic ...
+\item Localization
+\item Leap seconds
+\item Time synchronization
+\item ...
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusion}
+\begin{itemize}
+\item Dates and times are most complicatied because of time zones
+\item Python falls down hard there
+\item Pendulum handles common date, time, and time zone computations in an
+easier and safer way
+\end{itemize}
 \end{frame}
 
 \end{document}
