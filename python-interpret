@@ -16,23 +16,36 @@ import tokenize
 import datetime
 import pendulum
 
-last_t_type = None
-code_tokens = []
-for t in tokenize.generate_tokens(sys.stdin.readline):
-    if len(code_tokens) == 0 and t.type == tokenize.DEDENT:
-        continue
+try:
+    last_t_type = None
+    code_tokens = []
+    symbol_table = {
+        "datetime": datetime,
+        "pendulum": pendulum
+    }
+    for t in tokenize.generate_tokens(sys.stdin.readline):
+        if len(code_tokens) == 0 and t.type == tokenize.DEDENT:
+            continue
 
-    code_tokens.append(t)
+        code_tokens.append(t)
 
-    if ((t.type == tokenize.NL and t.type == last_t_type)
-            or t.type == tokenize.ENDMARKER):
-        code = tokenize.untokenize(code_tokens)
-        code = re.sub(r"^\\\n", "", code, flags=re.MULTILINE)
-        code = code.strip("\n")
-        print("\n".join(">>> " + s for s in code.split("\n")))
+        if ((t.type == tokenize.NL and t.type == last_t_type)
+                or t.type == tokenize.ENDMARKER):
+            code = tokenize.untokenize(code_tokens)
+            code = re.sub(r"^\\\n", "", code, flags=re.MULTILINE)
+            code = code.strip("\n")
+            print("\n".join(">>> " + s for s in code.split("\n")))
 
-        compiled_code = compile(code, '', 'single')
-        ret = exec(compiled_code)
-        code_tokens = []
+            compiled_code = compile(code, '', 'single')
+            ret = exec(compiled_code, symbol_table)
+            code_tokens = []
 
-    last_t_type = t.type
+        last_t_type = t.type
+except Exception as e:
+    with open('python-interpret.err', 'w') as out:
+        out.write(f"Caught exception {e} with tokens:\n")
+        for t in code_tokens:
+            out.write(repr(t) + "\n")
+        out.write("\n")
+    raise
+

@@ -108,10 +108,10 @@
 \begin{itemize}
 \item What time is it now?
 \item What time is it in \fillinblank?
-\item What time is here when it’s \fillinblank in \fillinblank?
+\item What time is it here when it’s \fillinblank in \fillinblank?
 \item What does the date 9/10/11 mean?
-\item How long ago did \fillinblank happen?
-\item Remind me when \fillinblank is about to happen
+\item How long ago did \fillinblank\ happen?
+\item Remind me when \fillinblank\ is about to happen
 \end{itemize}
 \end{frame}
 
@@ -150,7 +150,7 @@ Partition the day into regular intervals:
 \item Times
 \item \alert{Dates}
 
-\only<1-2>{Partition the day into \textit{irregular} intervals}
+\only<1-2>{Partition the year into \textit{irregular} intervals}
 
 \only<2->{12 months of varying lengths}
 
@@ -164,7 +164,7 @@ Partition the day into regular intervals:
 \begin{itemize}
 \item Times
 \item \alert{Dates} \\
-    Partition the day into \textit{irregular} intervals
+    Partition the year into \textit{irregular} intervals
 
     Root problem: \\
     365.24220 earth rotations per orbit of sun
@@ -250,22 +250,6 @@ the sun, and the convenience of uniform time over large parts of the earth
 
 \end{frame}
 
-\begin{frame}{Time zones for humans}
-
-You can’t know how far away a date or time is from any other date or time
-without knowing what timezones they are referring to \\[\baselineskip]
-
-\pause
-
-Given that time is what keeps everything from happening at once ...
-\\[\baselineskip]
-
-\pause
-
-That’s pretty important.
-
-\end{frame}
-
 \begin{frame}{Conclusions for humans}
 
 \begin{itemize}
@@ -295,6 +279,23 @@ Time and date are meaningless without timezone
 }
 
 \end{frame}
+
+\begin{frame}{Time zones for humans}
+
+You can’t know how far away a date or time is from any other date or time
+without knowing what timezones they are referring to \\[\baselineskip]
+
+\pause
+
+Given that time is what keeps everything from happening at once ...
+\\[\baselineskip]
+
+\pause
+
+That’s pretty important.
+
+\end{frame}
+
 
 \begin{frame}{Dates and times for computers}
 
@@ -326,26 +327,26 @@ Seconds since start of January 1, 1970, UTC: 1506624282
 
 \begin{frame}{Theoretical conclusions}
 
-Huamns and computers have very different needs when it comes to dates and
+Humans and computers have very different needs when it comes to dates and
 times
 
 \end{frame}
 
 \section{Python}
 
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+
 \begin{frame}{Basic use cases for date and time computation}
 \begin{itemize}
 \item What time is it now?
 \item What time is it in \fillinblank?
-\item What time is here when it’s \fillinblank in \fillinblank?
+\item What time is it here when it’s \fillinblank in \fillinblank?
 \item What does the date 9/10/11 mean?
-\item How long ago did \fillinblank happen?
-\item Remind me when \fillinblank is about to happen
+\item How long ago did \fillinblank\ happen?
+\item Remind me when \fillinblank\ is about to happen
 \end{itemize}
-\end{frame}
-
-\begin{frame}
-\tableofcontents[currentsection]
 \end{frame}
 
 \begin{frame}[fragile]{Python's standard library}
@@ -395,8 +396,17 @@ generally safe to use for date or time computations.}
 \tableofcontents[currentsection]
 \end{frame}
 
-\begin{frame}{Pendulum: “Python datetime made easy”}
+\begin{frame}{Pendulum: “Python datetimes made easy”}
 \texttt{pip3 install pendulum}
+
+\pause
+
+Automatically uses reliable time zone database
+
+\vspace*{\baselineskip}
+
+Olson database • https://github.com/eggert/tz
+
 \end{frame}
 
 \begin{frame}[fragile]{What time is it now?}
@@ -436,6 +446,132 @@ utcnow.timestamp()
 ' | ./python-interpret
 \END
 }
+
+\end{frame}
+
+\begin{frame}[fragile]{What time is it in \fillinblank?}
+
+{\sizefont{3}
+\bash[stdout]
+echo '
+pendulum.now().in_timezone("Europe/Berlin")
+' | ./python-interpret
+\END
+}
+\end{frame}
+
+\begin{frame}[fragile]{What time is it here when it’s \fillinblank in \fillinblank?}
+
+{\sizefont{3}
+\bash[stdout]
+echo '
+there_time = pendulum.create(
+    hour=9, minute=15, tz="Europe/Berlin")
+
+
+there_time
+
+
+here_time = there_time.in_tz(
+    pendulum.local_timezone())
+
+
+here_time
+
+
+there_time == here_time
+
+
+here_time.strftime("%H:%M")
+' | ./python-interpret
+\END
+}
+\end{frame}
+
+\begin{frame}[fragile]{What does the date 9/10/11 mean?}
+
+{\sizefont{3}
+\bash[stdout]
+echo '
+t = pendulum.parse("9/10/11")
+
+
+t
+' | ./python-interpret
+\END
+}
+
+\pause
+
+\only<2>{
+Pendulum comes up with something \\
+Pendulum isn’t perfect and \\
+should probably raise exceptions than it does}
+
+\only<3>{
+\begin{centering}
+YYYY-MM-DD \\[\baselineskip]
+\end{centering}
+
+Commonly called ISO8601:
+\begin{itemize}
+\item Unambiguous
+\item If you have a list of dates/times, sorting alphabetically sorts by
+date/time
+\end{itemize}
+}
+
+\end{frame}
+
+\begin{frame}[fragile]{How long ago did \fillinblank\ happen?}
+
+{\sizefont{3}
+\bash[stdout]
+echo '
+d = pendulum.now() \
+    - pendulum.parse("1969-07-21 2:39")
+
+
+d
+
+
+d.total_seconds()
+
+
+str(d)
+' | ./python-interpret
+\END
+}
+\end{frame}
+
+\begin{frame}[fragile]{Remind me when \fillinblank\ is about to happen}
+
+{\sizefont{3}
+\bash[stdout]
+echo '
+i = pendulum.create(2021, 1, 20, 12,
+    tz="America/New_York")
+
+
+i
+
+
+d = i - pendulum.now() 
+
+
+d
+
+
+str(d)
+' | ./python-interpret
+\END
+}
+
+\pause
+
+But what if the time zone changes?
+
+Better to store it as datetime and timezone, 
 
 \end{frame}
 
