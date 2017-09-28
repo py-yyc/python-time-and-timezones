@@ -1,26 +1,56 @@
-  - Theory
-  - Where Python’s standard library falls short
-  - Pendulum
-   “Python datetimes made easy”
+# Theory: Dates and times for computers
 
-  - When did happen? When should it happen?
-  - Logging
-  - Display
-  - Scheduling events
-  - Data analysis
-    Latency
-    Average time between events
-    What time of day do you see peak traffic?
-    Does this happen more often during business hours?
+  - Times are pretty straightforward
+    Cut up the day into regular intervals
+    will never change
+  - Dates are more complicated
+    Cut up the year into irregular intervals
+    But the system doesn’t change ... any more
+  - Time zones are really complicated and change all the time
 
-Dates
-    Year length is not a nice number: 365.24220
-Times
 Time zones
+    map
+  - Defined in terms of Universal Coordinated Time, UTC for short
+    Very similar to historical Greenwich Mean Time
+  - Today, Calgary is UTC-0600
+  - At 2:00 a.m. on November 5, switches to UTC-0700
+  - Defined by local laws, can change with little or no notice
+    Local rules changed in 2007
+  - Egypt 2014: Daylight savings transitions in May, June, July, and September
 
-Common operations
-  - Store the current timestamp in a neutral format that I can later
-    easily display in different ways
+timestamps/datetimes are meaningless unless you know the time zone,
+    12 o’clock ... where?
+and dates can be ambiguous too unless you know the time zone
+    not much overlap between the workday for Australia and Vancouver
+
+# Theory: Dates and times for computers
+
+  - Pick any arbitrary point in time
+  - Skip time zones: computers don’t care when the sunrise is
+  - Turns everything into simple arithmetic
+  - Number of seconds since the beginning of January 1, 1970, UTC.
+
+# Common computations
+
+  - What time is it now?
+    humans are fine with rough answers: around 6:30
+    most computer applications need precise results
+    e.g., analyzing latency inside a web server
+  - What time is it in ___ ?
+  - What time is it here when it’s ___ in ___ ?
+    for these two, need a database of time zones
+  - What does the date 9/10/11 mean?
+    input formatting
+    human formats can be very ambiguous
+    computer formats tend to be more rigidly defined
+  - How long ago did ___ happen?
+    output formatting
+  - Remind me when ___ is about to happen
+    perhaps “in one month”
+
+# Python’s standard library
+
+Doesn’t know about time zones!
 
 time.strftime("%s", time.gmtime())
 '1506224887'
@@ -39,70 +69,27 @@ mysql> SELECT 0 = 'banana';
 +--------------+
 1 row in set, 1 warning (0.00 sec)
 
-Do not use systems that can easily produce completely and obviously
-incorrect results.
+Don’t use it.
 
-Combination of APIs from the original UNIX
-and the early 1990s THINK C compiler for Macintosh
+MySQL banana
 
-Django 1.9 release notes:
+# Pendulum
+  “Python datetimes made easy”
 
-The django.utils.timezone.make_aware() function gained an is_dst argument to help resolve ambiguous times during DST transitions.
+At this point, can go through sample operations one by one
 
-make_aware(value, timezone=None, is_dst=None)
-Returns an aware datetime that represents the same point in time as value in timezone, value being a naive datetime. If timezone is set to None, it defaults to the current time zone.
-because 2:30 a.m. is ambiguous when it happens twice
+automatically uses reliable time zone database
 
-    for recording past events: epoch timestamp, and maybe client’s local
-    time zone name
+formatting: ISO8601 is actually a family of formats
 
-tzcompile
-look for multiple changes
+# Random advice
 
+  - ISO8601 format has some pretty nice properties: unambiguous, sortable
+  - If the clock is likely to be in sync, store past events as UTC offsets
+  - Store most future human-entered events as local time + timezone name,
+    because the timezone definition might change
 
-
-
-3 years ago today:
-  - can’t just subtract DAYS_IN_YEAR
-  - what if today is a leap day?
-
-Basic computations at the command line
-  - (g)date +%s
-  - (g)date -d '@<epoch time>'
-  - What time is it in Berlin?
-  - If it’s 8:15 p.m. in Berlin, what time is it here?
-  - How long ago did ___ happen?
-    months are not constant length
-    years are not constant length: leap days
-    days are not constant length: leap hours, leap seconds
-
-Formatting
-  - Can’t just store a string: need efficient, canonical format
-
-  - C partially specified by POSIX
-  - Unicode , slowly gaining popularity
-
-Ambiguity
-  - 1/2/11
-
-ISO8601
-  - actually a family of different formats
-
-Unix epoch time
-
-Dates
-
-Python datetime sucks
-
-
-There are many advanced date, time, and time zone topics
-
-Pendulum handles common date, time, and time zone computations
-in an easier and safer way
-than Python’s built-in libraries.
-
-
-What we don’t cover:
+# What we haven’t covered:
   - Pendulum may or may not cover these; you’re on your own here
   - Other calendars
     macos-calendar-list.png
@@ -112,3 +99,12 @@ What we don’t cover:
     But Friday, January 15, 2016
   - Leap seconds
     GPS satellites launched in 80s, require up-to-date leap second list
+
+# Conclusion
+
+There are many advanced date, time, and time zone topics
+
+Pendulum handles common date, time, and time zone computations
+in an easier and safer way
+than Python’s built-in libraries.
+

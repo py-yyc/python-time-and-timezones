@@ -71,9 +71,15 @@
 
 \newcommand*{\tocsection}[1]{\pdfbookmark[2]{#1}{#1}}
 
+\lstdefinestyle{bashfulStdout}{
+    basicstyle=\ttfamily,
+    keywords={},
+    showstringspaces=false
+}%
+
 %%
 
-\title{Time and timezones: Python vs the real world}
+\title{Dates, times, \\ and timezones: \\ Python vs the real world}
 
 \author{\texorpdfstring{%
     Andrew Neitsch}{Andrew Neitsch}}
@@ -94,6 +100,29 @@
 
 \section{Introduction}
 
+\section{Theory}
+
+\section{Common computations}
+
+
+
+\begin{frame}[fragile]{Time and Time Zones}
+
+It takes 365.24220 rotations of the earth to move around the sun
+
+This is not a very convenient number
+
+\bash[stdout,script,prefix=$\space]
+gfactor 365
+\END
+
+\bash[stdout,prefix=$\space]
+echo 365 + 1/4 - 1/100 + 1/400 | ./python-interpret
+\END
+
+
+\end{frame}
+
 \begin{frame}[fragile]{Time and Time Zones}
 
 \input{datetime-now.py.include}
@@ -102,7 +131,18 @@
 date +%s
 \END
 
-\input{hello-world.py.include}
+\bash[stdout,prefix=$\space]
+echo '1 + 1' | ./python-interpret
+\END
+
+\bash[stdout]
+echo '
+datetime.datetime.utcnow().strftime("%s")
+
+
+datetime.datetime.now().strftime("%s")
+' | ./python-interpret
+\END
 
 \end{frame}
 
