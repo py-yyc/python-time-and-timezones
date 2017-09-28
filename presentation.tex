@@ -202,39 +202,125 @@ echo '
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Theoretical conclusions for humans}
+\begin{frame}{Time zones for humans}
+
+\includegraphics[width=\paperwidth,center]{timezonemapdateline.jpg}
+
+\end{frame}
+
+\begin{frame}{Time zones for humans}
 
 \begin{itemize}
-\item Times
 
-Divided into regular intervals, \\
-relatively straightforward
+\only<1>{
+\item Noon is slightly different in different parts of the world
+}
 
-\item Dates
+\only<2>{
+\item Time zones are a balance between precision of having clocks close to
+the sun, and the convenience of uniform time over large parts of the earth
+}
 
-Divided into irregular intervals, \\
-complicated but unchanging
+\only<3->{
+\item Defined by local laws, can change with little or no notice
+}
 
-\item Time zones
+\only<4->{
+\item Defined relative to Universal Coordinated Time: UTC
+}
+\only<4>{(Similar to historical Greenwich Mean Time)}
 
-Super-complicated, arbitrary,
-subject to change without notice
+\only<5-6>{
+\item Today, Calgary is UTC-0600, which means exactly 6 hours behind UTC
+}
+
+\only<6>{
+\item Changes to UTC-0700 at 2:00 a.m. on November 5
+}
+
+\only<7>{
+\item Egypt 2014: Daylight savings transitions in May, June, July, and September
+}
+
+\only<8>{
+\item Not a lot of theory here: just need to be able to look it up
+}
 
 \end{itemize}
 
 \end{frame}
 
-\begin{frame}{Theoretical conclusions for humans}
+\begin{frame}{Time zones for humans}
+
+You can’t know how far away a date or time is from any other date or time
+without knowing what timezones they are referring to \\[\baselineskip]
+
+\pause
+
+Given that time is what keeps everything from happening at once ...
+\\[\baselineskip]
+
+\pause
+
+That’s pretty important.
+
+\end{frame}
+
+\begin{frame}{Conclusions for humans}
 
 \begin{itemize}
 \item Times
+
+\only<1->{
+Divided into regular intervals, relatively straightforward
+}
+
 \item Dates
+
+\only<2->{
+Divided into irregular intervals, complicated but unchanging
+}
+
 \item Time zones
+
+\only<3->{
+Super-complicated, arbitrary,
+subject to change without notice
+}
+
 \end{itemize}
 
-Unfortunately, times and dates are meaningless without time zones
+\only<4>{
+Time and date are meaningless without timezone
+}
 
-Not much overlap between the workday for Australia and Vancouver
+\end{frame}
+
+\begin{frame}{Dates and times for computers}
+
+Computers do not care about what we care about
+
+\pause
+
+\begin{itemize}
+\item \alert<1-2>{Times}
+
+\begin{onlyenv}<2-3>
+We can just count seconds since some arbitrary point
+
+Do math by subtracting
+\end{onlyenv}
+
+\only<3>{
+Seconds since start of January 1, 1970, UTC: 1506624282
+}
+
+\item \alert<4>{Dates}
+\item \alert<4>{Time zones}
+
+\only<4>{Only matter for I/O with humans}
+
+\end{itemize}
 
 \end{frame}
 
